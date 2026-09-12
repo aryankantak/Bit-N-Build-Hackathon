@@ -1,0 +1,1157 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f8faf7;
+  color: #172019;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.app {
+  min-height: 100vh;
+}
+
+/* NAVBAR */
+
+.navbar {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7%;
+  background: white;
+  border-bottom: 1px solid #e8ece7;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.logo span {
+  font-size: 25px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #4f5952;
+  font-size: 15px;
+}
+
+.business-btn {
+  border: none;
+  background: #1d6b42;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 9px;
+  font-weight: 600;
+}
+
+/* HERO */
+
+.hero-section {
+  min-height: 570px;
+  padding: 70px 9%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 70px;
+  background: linear-gradient(120deg, #edf7ee, #f9fbf7);
+}
+
+.hero-content {
+  max-width: 650px;
+}
+
+.badge {
+  display: inline-block;
+  background: #dcefdc;
+  color: #25613b;
+  padding: 9px 14px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+
+.hero-content h1 {
+  color: #163b2a;
+  font-size: 60px;
+  line-height: 1.04;
+  letter-spacing: -2px;
+  margin-bottom: 22px;
+}
+
+.hero-content h1 span {
+  color: #287a48;
+}
+
+.hero-content > p {
+  color: #657067;
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 570px;
+  margin-bottom: 30px;
+}
+
+/* SEARCH */
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 1px solid #dfe6df;
+  border-radius: 12px;
+  padding: 6px;
+  max-width: 570px;
+  box-shadow: 0 8px 25px rgba(30, 70, 40, 0.08);
+}
+
+.search-box span {
+  padding-left: 14px;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 14px;
+  font-size: 15px;
+}
+
+.search-box button {
+  border: none;
+  background: #1d6b42;
+  color: white;
+  padding: 13px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* HERO STATS */
+
+.hero-stats {
+  display: flex;
+  gap: 45px;
+  margin-top: 35px;
+}
+
+.hero-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hero-stats strong {
+  font-size: 21px;
+}
+
+.hero-stats span {
+  font-size: 12px;
+  color: #788078;
+}
+
+/* HERO CARD */
+
+.hero-card {
+  width: 330px;
+  background: white;
+  padding: 22px;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(29, 80, 45, 0.14);
+  transform: rotate(2deg);
+}
+
+.floating-label {
+  display: inline-block;
+  background: #fff1d9;
+  color: #986319;
+  padding: 7px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.food-visual {
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  background: #fff8ec;
+  border-radius: 14px;
+  margin: 15px 0;
+}
+
+.hero-card h3 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.hero-card p {
+  color: #7a817c;
+  font-size: 13px;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #969c97;
+  font-size: 14px;
+}
+
+.price-row strong {
+  font-size: 24px;
+}
+
+.discount {
+  background: #e2f4e5;
+  color: #277143;
+  font-size: 11px;
+  padding: 5px 7px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.deadline {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #edf0ed;
+  color: #8b5c20;
+  font-size: 13px;
+}
+
+/* DEALS */
+
+.deals-section {
+  padding: 80px 9%;
+  background: white;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 30px;
+}
+
+.small-heading {
+  color: #398052;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.section-heading h2 {
+  font-size: 36px;
+  margin-top: 8px;
+}
+
+.view-all {
+  border: none;
+  background: none;
+  color: #287348;
+  font-weight: bold;
+}
+
+.category-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 35px;
+  overflow-x: auto;
+}
+
+.category {
+  border: 1px solid #dfe5df;
+  background: white;
+  padding: 10px 16px;
+  border-radius: 25px;
+  white-space: nowrap;
+}
+
+.category.active {
+  background: #1d6b42;
+  color: white;
+  border-color: #1d6b42;
+}
+
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.deal-card {
+  border: 1px solid #e5e9e5;
+  border-radius: 16px;
+  overflow: hidden;
+  background: white;
+  transition: 0.2s;
+}
+
+.deal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(30, 60, 35, 0.1);
+}
+
+.food-image {
+  height: 190px;
+  background: #f4f7f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.food-image span {
+  font-size: 75px;
+}
+
+.distance {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: white;
+  padding: 6px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+
+.deal-info {
+  padding: 18px;
+}
+
+.business-name {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #398052;
+  font-weight: bold;
+  letter-spacing: 0.7px;
+}
+
+.deal-info h3 {
+  margin-top: 7px;
+  font-size: 18px;
+}
+
+.quantity {
+  color: #7c837e;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.card-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.card-price strong {
+  font-size: 21px;
+}
+
+.pickup {
+  color: #956223;
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.reserve-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 11px;
+  border: none;
+  border-radius: 8px;
+  background: #1d6b42;
+  color: white;
+  font-weight: bold;
+}
+
+/* HOW IT WORKS */
+
+.how-section {
+  padding: 90px 9%;
+  background: #f4f8f2;
+}
+
+.centered {
+  display: block;
+  text-align: center;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  margin-top: 50px;
+}
+
+.step {
+  text-align: center;
+}
+
+.step-icon {
+  width: 65px;
+  height: 65px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 50%;
+  font-size: 27px;
+  box-shadow: 0 5px 20px rgba(30, 60, 35, 0.08);
+}
+
+.step h3 {
+  margin-top: 18px;
+  font-size: 18px;
+}
+
+.step p {
+  color: #707971;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+/* FOOTER */
+
+footer {
+  padding: 40px 9%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #173524;
+  color: white;
+}
+
+footer p {
+  color: #b8c8bd;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .hero-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-card {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .deals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-links a {
+    display: none;
+  }
+
+  .hero-content h1 {
+    font-size: 42px;
+  }
+
+  .hero-stats {
+    gap: 20px;
+  }
+
+  .deals-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  footer {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+/* RESERVATION MODAL */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 30, 20, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.reservation-modal {
+  width: 100%;
+  max-width: 430px;
+  background: white;
+  border-radius: 22px;
+  padding: 35px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
+  animation: modalIn 0.2s ease-out;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  right: 18px;
+  top: 15px;
+  border: none;
+  background: none;
+  font-size: 28px;
+  color: #777;
+}
+
+.success-icon {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e4f5e6;
+  border-radius: 50%;
+  font-size: 30px;
+  margin: 0 auto 18px;
+}
+
+.reservation-modal h2 {
+  font-size: 27px;
+  margin-bottom: 10px;
+}
+
+.reservation-modal > p {
+  color: #68716a;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.pickup-code {
+  margin: 25px 0;
+  padding: 18px;
+  background: #f2f7f1;
+  border: 2px dashed #9bb79f;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pickup-code span {
+  color: #657067;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+}
+
+.pickup-code strong {
+  font-size: 32px;
+  letter-spacing: 6px;
+  color: #1d6b42;
+}
+
+.reservation-details {
+  border-top: 1px solid #edf0ed;
+  border-bottom: 1px solid #edf0ed;
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.reservation-details div {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  font-size: 13px;
+}
+
+.reservation-details span {
+  color: #727a74;
+}
+
+.reservation-details strong {
+  color: #263229;
+}
+
+.pickup-message {
+  margin: 18px 0 !important;
+}
+
+.done-btn {
+  width: 100%;
+  border: none;
+  padding: 13px;
+  border-radius: 9px;
+  background: #1d6b42;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+}
+/* =========================================
+   BUSINESS DASHBOARD
+========================================= */
+
+.business-dashboard {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 70px 30px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.dashboard-header h1 {
+  font-size: 42px;
+  margin: 8px 0;
+  color: #1d3024;
+}
+
+.dashboard-header p {
+  color: #68716a;
+  margin: 0;
+}
+
+.dashboard-icon {
+  width: 80px;
+  height: 80px;
+  background: #e4f5e6;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+}
+
+
+/* Dashboard statistics */
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 35px;
+}
+
+.dashboard-stat {
+  background: white;
+  border: 1px solid #e5ebe5;
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 8px 25px rgba(30, 60, 40, 0.05);
+}
+
+.dashboard-stat > span {
+  width: 48px;
+  height: 48px;
+  background: #f0f6ef;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23px;
+}
+
+.dashboard-stat strong {
+  font-size: 24px;
+  color: #1d6b42;
+}
+
+.dashboard-stat p {
+  margin: 3px 0 0;
+  color: #737b75;
+  font-size: 13px;
+}
+
+
+/* Add surplus card */
+
+.add-surplus-card {
+  background: white;
+  border: 1px solid #e4eae4;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(30, 60, 40, 0.06);
+  margin-bottom: 40px;
+}
+
+.add-surplus-card h2 {
+  margin: 0;
+  font-size: 25px;
+  color: #263229;
+}
+
+.form-description {
+  color: #747c76;
+  font-size: 14px;
+  margin: 7px 0 28px;
+}
+
+
+/* Form */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3d4941;
+}
+
+.form-group input,
+.form-group select {
+  border: 1px solid #d9e1d9;
+  border-radius: 9px;
+  padding: 12px 13px;
+  font-size: 14px;
+  outline: none;
+  background: #fbfcfb;
+  transition: 0.2s;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #1d6b42;
+  box-shadow: 0 0 0 3px rgba(29, 107, 66, 0.08);
+  background: white;
+}
+
+.emoji-group {
+  margin-top: 20px;
+  max-width: 300px;
+}
+
+
+/* Publish button */
+
+.publish-btn {
+  margin-top: 28px;
+  border: none;
+  background: #1d6b42;
+  color: white;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.publish-btn:hover {
+  background: #155534;
+  transform: translateY(-1px);
+}
+
+
+/* Current listings */
+
+.current-listings {
+  background: white;
+  border: 1px solid #e4eae4;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(30, 60, 40, 0.05);
+}
+
+.listing-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.listing-header h2 {
+  margin: 7px 0 0;
+  color: #263229;
+}
+
+.listing-count {
+  background: #eef6ef;
+  color: #1d6b42;
+  padding: 7px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* Listing rows */
+
+.business-listings {
+  display: flex;
+  flex-direction: column;
+}
+
+.business-listing {
+  display: grid;
+  grid-template-columns: 55px 1fr 100px 120px;
+  align-items: center;
+  gap: 18px;
+  padding: 17px 0;
+  border-top: 1px solid #edf0ed;
+}
+
+.listing-emoji {
+  width: 50px;
+  height: 50px;
+  background: #f5f7f4;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+}
+
+.listing-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.listing-main strong {
+  color: #263229;
+  font-size: 14px;
+}
+
+.listing-main span {
+  color: #858c87;
+  font-size: 12px;
+}
+
+.listing-quantity {
+  display: flex;
+  flex-direction: column;
+}
+
+.listing-quantity strong {
+  color: #263229;
+  font-size: 14px;
+}
+
+.listing-quantity span {
+  color: #858c87;
+  font-size: 11px;
+}
+
+.listing-price {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.listing-price strong {
+  color: #1d6b42;
+  font-size: 15px;
+}
+
+.listing-price span {
+  color: #999;
+  font-size: 11px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 750px) {
+
+  .business-dashboard {
+    padding: 45px 18px;
+  }
+
+  .dashboard-header {
+    align-items: flex-start;
+  }
+
+  .dashboard-header h1 {
+    font-size: 32px;
+  }
+
+  .dashboard-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
+
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .add-surplus-card,
+  .current-listings {
+    padding: 22px;
+  }
+
+  .business-listing {
+    grid-template-columns: 45px 1fr;
+  }
+
+  .listing-quantity,
+  .listing-price {
+    display: none;
+  }
+
+}
+/* =========================================
+   RESERVATIONS
+========================================= */
+
+.reservations-card {
+  margin-top: 30px;
+  background: white;
+  border: 1px solid #e4eae4;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(30, 60, 40, 0.05);
+}
+
+.empty-reservations {
+  text-align: center;
+  padding: 35px 20px;
+  color: #8a928c;
+  border-top: 1px solid #edf0ed;
+}
+
+.empty-reservations p {
+  margin: 10px 0 4px;
+  color: #39443d;
+  font-weight: 600;
+}
+
+.empty-reservations span {
+  font-size: 13px;
+}
+
+.reservation-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.business-reservation {
+  display: grid;
+  grid-template-columns: 50px 1fr 110px 90px 130px;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 0;
+  border-top: 1px solid #edf0ed;
+}
+
+.reservation-product {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #f3f7f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.reservation-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reservation-main strong {
+  font-size: 14px;
+  color: #263229;
+}
+
+.reservation-main span {
+  font-size: 12px;
+  color: #858c87;
+}
+
+.reservation-code {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.reservation-code span {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #858c87;
+  font-weight: 700;
+}
+
+.reservation-code strong {
+  color: #1d6b42;
+  letter-spacing: 2px;
+}
+
+.reservation-status {
+  font-size: 12px;
+  font-weight: 700;
+  color: #b47716;
+  background: #fff7df;
+  padding: 6px 9px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.collect-btn {
+  border: none;
+  background: #1d6b42;
+  color: white;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.collect-btn:hover {
+  background: #155534;
+}
+
+@media (max-width: 750px) {
+
+  .business-reservation {
+    grid-template-columns: 45px 1fr;
+  }
+
+  .reservation-code,
+  .reservation-status,
+  .collect-btn {
+    grid-column: 2;
+  }
+
+}
+/* ===== TEXT VISIBILITY FIX ===== */
+
+.hero-content h1 {
+  color: #163b2a !important;
+}
+
+.hero-content h1 span {
+  color: #27804d !important;
+}
+
+.section-heading h2 {
+  color: #163b2a !important;
+}
+
+.category {
+  color: #163b2a !important;
+}
+
+.category.active {
+  color: white !important;
+}
+
+.view-all {
+  color: #27804d !important;
+}
+
+.deal-info h3 {
+  color: #163b2a !important;
+}
+
+.business-name {
+  color: #27804d !important;
+}
+
+.quantity {
+  color: #64748b !important;
+}
+
+.pickup {
+  color: #8a5a16 !important;
+}
+/* ===== FORM INPUT VISIBILITY FIX ===== */
+
+.form-group input,
+.form-group select {
+  color: #163b2a !important;
+  background-color: #ffffff !important;
+}
+
+.form-group input::placeholder {
+  color: #64748b !important;
+  opacity: 1 !important;
+}
+
+.form-group select {
+  color: #163b2a !important;
+}
+
+/* Time input */
+.form-group input[type="time"] {
+  color: #163b2a !important;
+  color-scheme: light;
+}
+
+/* Labels */
+.form-group label {
+  color: #163b2a !important;
+}
