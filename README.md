@@ -209,11 +209,11 @@ In the future, AI/ML could be used for things such as demand prediction, persona
 
 ## Team
 
-Build n Bit
-Aryan Kantak 
-Arnav Naik 
-Aditi Dessai 
-Aditya Gupta 
+Build n Bit:
+Aryan Kantak, 
+Arnav Naik,
+Aditi Dessai,
+Aditya Gupta
 
 ## License
 
