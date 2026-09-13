@@ -10,57 +10,10 @@ const supabaseHeaders = {
   'Content-Type': 'application/json',
 }
 
-const initialItems = [
-  {
-    id: 1,
-    emoji: '🥐',
-    name: 'Fresh Croissants',
-    business: 'Bake House',
-    originalPrice: 500,
-    surplusPrice: 200,
-    quantity: 12,
-    distance: '1.2 km',
-    pickup: 'Before 9:00 PM',
-  },
-  {
-    id: 2,
-    emoji: '🍕',
-    name: 'Pizza Slices',
-    business: 'La Piazza',
-    originalPrice: 600,
-    surplusPrice: 250,
-    quantity: 8,
-    distance: '0.8 km',
-    pickup: 'Before 8:30 PM',
-  },
-  {
-    id: 3,
-    emoji: '🥖',
-    name: 'Fresh Bread',
-    business: 'Daily Bread',
-    originalPrice: 400,
-    surplusPrice: 150,
-    quantity: 15,
-    distance: '2.1 km',
-    pickup: 'Before 10:00 PM',
-  },
-  {
-    id: 4,
-    emoji: '🍰',
-    name: 'Pastry Box',
-    business: 'Sweet Corner',
-    originalPrice: 800,
-    surplusPrice: 300,
-    quantity: 6,
-    distance: '1.5 km',
-    pickup: 'Before 9:30 PM',
-  },
-]
-
 function App() {
   const [selectedItem, setSelectedItem] = useState(null)
   const [currentPage, setCurrentPage] = useState('customer')
-  const [items, setItems] = useState(initialItems)
+  const [items, setItems] = useState([])
   const [reservations, setReservations] = useState([])
 
   useEffect(() => {
