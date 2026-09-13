@@ -209,9 +209,11 @@ In the future, AI/ML could be used for things such as demand prediction, persona
 
 ## Team
 
-This project was built as part of the Bit-N-Build Hackathon.
-
-The goal was to build a practical solution around food surplus and waste reduction while keeping the technology simple enough to develop and demonstrate quickly.
+Build n Bit
+Aryan Kantak 
+Arnav Naik 
+Aditi Dessai 
+Aditya Gupta 
 
 ## License
 
