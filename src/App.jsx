@@ -15,6 +15,8 @@ function App() {
   const [currentPage, setCurrentPage] = useState('customer')
   const [items, setItems] = useState([])
   const [reservations, setReservations] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
 
   useEffect(() => {
     const loadListings = async () => {
@@ -40,6 +42,7 @@ function App() {
             quantity: Number(item.quantity),
             distance: `${item.distance ?? 0} km`,
             pickup: item.pickup,
+            category: item.category || 'Restaurant',
           }))
         )
       } catch (error) {
@@ -49,9 +52,6 @@ function App() {
 
     loadListings()
   }, [])
-
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('All')
 
   const [form, setForm] = useState({
     name: '',
@@ -113,8 +113,8 @@ function App() {
         quantity: Number(savedItem.quantity),
         distance: `${savedItem.distance ?? 0} km`,
         pickup: savedItem.pickup,
-        category: savedItem.category || 'Restaurant',
-              }
+        category: savedItem.category || form.category || 'Restaurant',
+      }
 
       setItems((currentItems) => [...currentItems, newItem])
 
@@ -135,6 +135,68 @@ function App() {
       alert('Could not publish the surplus listing. Please try again.')
     }
   }
+
+  const handleDelete = async (itemId) => {
+    const item = items.find((listing) => String(listing.id) === String(itemId))
+
+    if (!item) {
+      alert('Listing not found.')
+      return
+    }
+
+    const confirmed = window.confirm(
+      `Delete "${item.name}"? This will remove it from the marketplace.`
+    )
+
+    if (!confirmed) return
+
+    try {
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/listings?id=eq.${encodeURIComponent(itemId)}`,
+        {
+          method: 'DELETE',
+          headers: {
+            ...supabaseHeaders,
+            Prefer: 'return=representation',
+          },
+        }
+      )
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(`Supabase delete failed: ${response.status} ${errorText}`)
+      }
+
+      const deletedRows = await response.json().catch(() => [])
+
+      if (!Array.isArray(deletedRows) || deletedRows.length === 0) {
+        throw new Error('Supabase did not delete the listing. Check the DELETE RLS policy.')
+      }
+
+      setItems((currentItems) =>
+        currentItems.filter((listing) => String(listing.id) !== String(itemId))
+      )
+    } catch (error) {
+      console.error('Unable to delete listing from Supabase:', error)
+      alert(`Could not delete the listing. ${error.message}`)
+    }
+  }
+
+  const normalizedSearch = searchTerm.trim().toLowerCase()
+
+  const filteredItems = items.filter((item) => {
+    const matchesSearch =
+      !normalizedSearch ||
+      item.name.toLowerCase().includes(normalizedSearch) ||
+      item.business.toLowerCase().includes(normalizedSearch)
+
+    const itemCategory = String(item.category || '').trim().toLowerCase()
+    const matchesCategory =
+      selectedCategory === 'All' ||
+      itemCategory === selectedCategory.toLowerCase()
+
+    return matchesSearch && matchesCategory
+  })
 
   const handleReserve = (item) => {
     const pickupCode = Math.random()
@@ -171,21 +233,6 @@ function App() {
       )
     )
   }
-
-  const filteredItems = items.filter((item) => {
-    const term = searchTerm.trim().toLowerCase()
-
-    const matchesSearch =
-      !term ||
-      String(item.name || '').toLowerCase().includes(term) ||
-      String(item.business || '').toLowerCase().includes(term)
-
-    const matchesCategory =
-      selectedCategory === 'All' ||
-      String(item.category || '').toLowerCase() === selectedCategory.toLowerCase()
-
-    return matchesSearch && matchesCategory
-  })
 
   return (
     <div className="app">
@@ -262,19 +309,14 @@ function App() {
 
                 <input
                   type="text"
+                  placeholder="Search for deals near you..."
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
-                  placeholder="Search for deals near you..."
-                  aria-label="Search surplus deals"
                 />
 
                 <button
                   type="button"
-                  onClick={() =>
-                    document.getElementById('deals')?.scrollIntoView({
-                      behavior: 'smooth',
-                    })
-                  }
+                  onClick={() => document.getElementById('deals')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   Search
                 </button>
@@ -377,23 +419,38 @@ function App() {
             {/* Categories */}
             <div className="category-row">
 
-              <button className="category active">
+              <button
+                className={`category ${selectedCategory === 'All' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('All')}
+              >
                 All deals
               </button>
 
-              <button className="category">
+              <button
+                className={`category ${selectedCategory === 'Bakery' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('Bakery')}
+              >
                 🥐 Bakery
               </button>
 
-              <button className="category">
+              <button
+                className={`category ${selectedCategory === 'Restaurant' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('Restaurant')}
+              >
                 🍕 Restaurants
               </button>
 
-              <button className="category">
+              <button
+                className={`category ${selectedCategory === 'Grocery' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('Grocery')}
+              >
                 🥬 Grocery
               </button>
 
-              <button className="category">
+              <button
+                className={`category ${selectedCategory === 'Produce' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('Produce')}
+              >
                 🌾 Produce
               </button>
 
@@ -798,23 +855,6 @@ function App() {
               </div>
 
 
-              <div className="form-group">
-                <label>
-                  Category
-                </label>
-                <select
-                  name="category"
-                  value={form.category}
-                  onChange={handleFormChange}
-                  required
-                >
-                  <option value="Restaurant">🍕 Restaurant</option>
-                  <option value="Bakery">🥐 Bakery</option>
-                  <option value="Grocery">🥬 Grocery</option>
-                  <option value="Produce">🌾 Produce</option>
-                </select>
-              </div>
-
               <div className="form-group emoji-group">
 
                 <label>
@@ -850,6 +890,23 @@ function App() {
 
               </div>
 
+
+              <div className="form-group">
+                <label>
+                  Category
+                </label>
+
+                <select
+                  name="category"
+                  value={form.category}
+                  onChange={handleFormChange}
+                >
+                  <option value="Bakery">🥐 Bakery</option>
+                  <option value="Restaurant">🍕 Restaurant</option>
+                  <option value="Grocery">🥬 Grocery</option>
+                  <option value="Produce">🌾 Produce</option>
+                </select>
+              </div>
 
               <button
                 type="submit"
@@ -935,6 +992,23 @@ function App() {
                     </span>
 
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(item.id)}
+                    style={{
+                      marginLeft: '12px',
+                      padding: '8px 12px',
+                      border: '1px solid #dc2626',
+                      borderRadius: '8px',
+                      background: 'transparent',
+                      color: '#dc2626',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Delete
+                  </button>
 
                 </div>
 
