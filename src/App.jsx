@@ -1,5 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
+
+const SUPABASE_URL = 'https://yaqznbcojhcqfyqawbie.supabase.co'
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_8sK7yio5RGIFHN8NP1xC-A_R7E5usyf'
+
+const supabaseHeaders = {
+  apikey: SUPABASE_PUBLISHABLE_KEY,
+  Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+  'Content-Type': 'application/json',
+}
 
 const initialItems = [
   {
@@ -54,6 +63,40 @@ function App() {
   const [items, setItems] = useState(initialItems)
   const [reservations, setReservations] = useState([])
 
+  useEffect(() => {
+    const loadListings = async () => {
+      try {
+        const response = await fetch(
+          `${SUPABASE_URL}/rest/v1/listings?select=id,name,business,original_price,surplus_price,quantity,pickup,emoji,distance,created_at&order=created_at.desc`,
+          { headers: supabaseHeaders }
+        )
+
+        if (!response.ok) {
+          throw new Error(`Supabase request failed: ${response.status}`)
+        }
+
+        const data = await response.json()
+        setItems(
+          data.map((item) => ({
+            id: item.id,
+            emoji: item.emoji || '🥐',
+            name: item.name,
+            business: item.business,
+            originalPrice: Number(item.original_price),
+            surplusPrice: Number(item.surplus_price),
+            quantity: Number(item.quantity),
+            distance: `${item.distance ?? 0} km`,
+            pickup: item.pickup,
+          }))
+        )
+      } catch (error) {
+        console.error('Unable to load listings from Supabase:', error)
+      }
+    }
+
+    loadListings()
+  }, [])
+
   const [form, setForm] = useState({
     name: '',
     business: '',
@@ -71,34 +114,66 @@ function App() {
     })
   }
 
-  const handlePublish = (event) => {
+  const handlePublish = async (event) => {
     event.preventDefault()
 
-    const newItem = {
-      id: Date.now(),
+    const listing = {
       emoji: form.emoji,
       name: form.name,
       business: form.business,
-      originalPrice: Number(form.originalPrice),
-      surplusPrice: Number(form.surplusPrice),
+      original_price: Number(form.originalPrice),
+      surplus_price: Number(form.surplusPrice),
       quantity: Number(form.quantity),
-      distance: '0.5 km',
+      distance: 0.5,
       pickup: `Before ${form.pickup}`,
     }
 
-    setItems([...items, newItem])
+    try {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/listings`, {
+        method: 'POST',
+        headers: {
+          ...supabaseHeaders,
+          Prefer: 'return=representation',
+        },
+        body: JSON.stringify(listing),
+      })
 
-    setForm({
-      name: '',
-      business: '',
-      originalPrice: '',
-      surplusPrice: '',
-      quantity: '',
-      pickup: '',
-      emoji: '🥐',
-    })
+      if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(`Supabase insert failed: ${response.status} ${errorText}`)
+      }
 
-    setCurrentPage('customer')
+      const [savedItem] = await response.json()
+
+      const newItem = {
+        id: savedItem.id,
+        emoji: savedItem.emoji || '🥐',
+        name: savedItem.name,
+        business: savedItem.business,
+        originalPrice: Number(savedItem.original_price),
+        surplusPrice: Number(savedItem.surplus_price),
+        quantity: Number(savedItem.quantity),
+        distance: `${savedItem.distance ?? 0} km`,
+        pickup: savedItem.pickup,
+      }
+
+      setItems((currentItems) => [...currentItems, newItem])
+
+      setForm({
+        name: '',
+        business: '',
+        originalPrice: '',
+        surplusPrice: '',
+        quantity: '',
+        pickup: '',
+        emoji: '🥐',
+      })
+
+      setCurrentPage('customer')
+    } catch (error) {
+      console.error('Unable to publish listing to Supabase:', error)
+      alert('Could not publish the surplus listing. Please try again.')
+    }
   }
 
   const handleReserve = (item) => {
