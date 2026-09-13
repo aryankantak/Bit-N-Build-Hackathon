@@ -15,8 +15,6 @@ function App() {
   const [currentPage, setCurrentPage] = useState('customer')
   const [items, setItems] = useState([])
   const [reservations, setReservations] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('All')
 
   useEffect(() => {
     const loadListings = async () => {
@@ -51,6 +49,9 @@ function App() {
 
     loadListings()
   }, [])
+
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
 
   const [form, setForm] = useState({
     name: '',
@@ -112,7 +113,8 @@ function App() {
         quantity: Number(savedItem.quantity),
         distance: `${savedItem.distance ?? 0} km`,
         pickup: savedItem.pickup,
-      }
+        category: savedItem.category || 'Restaurant',
+              }
 
       setItems((currentItems) => [...currentItems, newItem])
 
@@ -124,6 +126,7 @@ function App() {
         quantity: '',
         pickup: '',
         emoji: '🥐',
+        category: 'Restaurant',
       })
 
       setCurrentPage('customer')
@@ -132,53 +135,6 @@ function App() {
       alert('Could not publish the surplus listing. Please try again.')
     }
   }
-
-  const handleDelete = async (itemId) => {
-    const item = items.find((listing) => listing.id === itemId)
-    const confirmed = window.confirm(
-      `Delete "${item?.name || 'this listing'}"? This will remove it from the marketplace.`
-    )
-
-    if (!confirmed) return
-
-    try {
-      const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/listings?id=eq.${itemId}`,
-        {
-          method: 'DELETE',
-          headers: supabaseHeaders,
-        }
-      )
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        throw new Error(`Supabase delete failed: ${response.status} ${errorText}`)
-      }
-
-      setItems((currentItems) =>
-        currentItems.filter((listing) => listing.id !== itemId)
-      )
-    } catch (error) {
-      console.error('Unable to delete listing from Supabase:', error)
-      alert('Could not delete the listing. Please try again.')
-    }
-  }
-
-  const normalizedSearch = searchTerm.trim().toLowerCase()
-
-  const filteredItems = items.filter((item) => {
-    const matchesSearch =
-      !normalizedSearch ||
-      item.name.toLowerCase().includes(normalizedSearch) ||
-      item.business.toLowerCase().includes(normalizedSearch)
-
-    const matchesCategory =
-      selectedCategory === 'All' ||
-      (item.category || 'Restaurant').toLowerCase() ===
-        selectedCategory.toLowerCase()
-
-    return matchesSearch && matchesCategory
-  })
 
   const handleReserve = (item) => {
     const pickupCode = Math.random()
@@ -215,6 +171,21 @@ function App() {
       )
     )
   }
+
+  const filteredItems = items.filter((item) => {
+    const term = searchTerm.trim().toLowerCase()
+
+    const matchesSearch =
+      !term ||
+      String(item.name || '').toLowerCase().includes(term) ||
+      String(item.business || '').toLowerCase().includes(term)
+
+    const matchesCategory =
+      selectedCategory === 'All' ||
+      String(item.category || '').toLowerCase() === selectedCategory.toLowerCase()
+
+    return matchesSearch && matchesCategory
+  })
 
   return (
     <div className="app">
@@ -291,12 +262,20 @@ function App() {
 
                 <input
                   type="text"
-                  placeholder="Search for deals near you..."
                   value={searchTerm}
                   onChange={(event) => setSearchTerm(event.target.value)}
+                  placeholder="Search for deals near you..."
+                  aria-label="Search surplus deals"
                 />
 
-                <button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    document.getElementById('deals')?.scrollIntoView({
+                      behavior: 'smooth',
+                    })
+                  }
+                >
                   Search
                 </button>
 
@@ -398,38 +377,23 @@ function App() {
             {/* Categories */}
             <div className="category-row">
 
-              <button
-                className={`category ${selectedCategory === 'All' ? 'active' : ''}`}
-                onClick={() => setSelectedCategory('All')}
-              >
+              <button className="category active">
                 All deals
               </button>
 
-              <button
-                className={`category ${selectedCategory === 'Bakery' ? 'active' : ''}`}
-                onClick={() => setSelectedCategory('Bakery')}
-              >
+              <button className="category">
                 🥐 Bakery
               </button>
 
-              <button
-                className={`category ${selectedCategory === 'Restaurant' ? 'active' : ''}`}
-                onClick={() => setSelectedCategory('Restaurant')}
-              >
+              <button className="category">
                 🍕 Restaurants
               </button>
 
-              <button
-                className={`category ${selectedCategory === 'Grocery' ? 'active' : ''}`}
-                onClick={() => setSelectedCategory('Grocery')}
-              >
+              <button className="category">
                 🥬 Grocery
               </button>
 
-              <button
-                className={`category ${selectedCategory === 'Produce' ? 'active' : ''}`}
-                onClick={() => setSelectedCategory('Produce')}
-              >
+              <button className="category">
                 🌾 Produce
               </button>
 
@@ -834,6 +798,23 @@ function App() {
               </div>
 
 
+              <div className="form-group">
+                <label>
+                  Category
+                </label>
+                <select
+                  name="category"
+                  value={form.category}
+                  onChange={handleFormChange}
+                  required
+                >
+                  <option value="Restaurant">🍕 Restaurant</option>
+                  <option value="Bakery">🥐 Bakery</option>
+                  <option value="Grocery">🥬 Grocery</option>
+                  <option value="Produce">🌾 Produce</option>
+                </select>
+              </div>
+
               <div className="form-group emoji-group">
 
                 <label>
@@ -869,23 +850,6 @@ function App() {
 
               </div>
 
-
-              <div className="form-group">
-                <label>
-                  Category
-                </label>
-
-                <select
-                  name="category"
-                  value={form.category}
-                  onChange={handleFormChange}
-                >
-                  <option value="Bakery">🥐 Bakery</option>
-                  <option value="Restaurant">🍕 Restaurant</option>
-                  <option value="Grocery">🥬 Grocery</option>
-                  <option value="Produce">🌾 Produce</option>
-                </select>
-              </div>
 
               <button
                 type="submit"
@@ -971,23 +935,6 @@ function App() {
                     </span>
 
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(item.id)}
-                    style={{
-                      marginLeft: '12px',
-                      padding: '8px 12px',
-                      border: '1px solid #dc2626',
-                      borderRadius: '8px',
-                      background: 'transparent',
-                      color: '#dc2626',
-                      cursor: 'pointer',
-                      fontWeight: 600,
-                    }}
-                  >
-                    Delete
-                  </button>
 
                 </div>
 
