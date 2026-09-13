@@ -15,12 +15,14 @@ function App() {
   const [currentPage, setCurrentPage] = useState('customer')
   const [items, setItems] = useState([])
   const [reservations, setReservations] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
 
   useEffect(() => {
     const loadListings = async () => {
       try {
         const response = await fetch(
-          `${SUPABASE_URL}/rest/v1/listings?select=id,name,business,original_price,surplus_price,quantity,pickup,emoji,distance,created_at&order=created_at.desc`,
+          `${SUPABASE_URL}/rest/v1/listings?select=id,name,business,original_price,surplus_price,quantity,pickup,emoji,distance,category,created_at&order=created_at.desc`,
           { headers: supabaseHeaders }
         )
 
@@ -58,6 +60,7 @@ function App() {
     quantity: '',
     pickup: '',
     emoji: '🥐',
+    category: 'Restaurant',
   })
 
   const handleFormChange = (event) => {
@@ -79,6 +82,7 @@ function App() {
       quantity: Number(form.quantity),
       distance: 0.5,
       pickup: `Before ${form.pickup}`,
+      category: form.category,
     }
 
     try {
@@ -128,6 +132,53 @@ function App() {
       alert('Could not publish the surplus listing. Please try again.')
     }
   }
+
+  const handleDelete = async (itemId) => {
+    const item = items.find((listing) => listing.id === itemId)
+    const confirmed = window.confirm(
+      `Delete "${item?.name || 'this listing'}"? This will remove it from the marketplace.`
+    )
+
+    if (!confirmed) return
+
+    try {
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/listings?id=eq.${itemId}`,
+        {
+          method: 'DELETE',
+          headers: supabaseHeaders,
+        }
+      )
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        throw new Error(`Supabase delete failed: ${response.status} ${errorText}`)
+      }
+
+      setItems((currentItems) =>
+        currentItems.filter((listing) => listing.id !== itemId)
+      )
+    } catch (error) {
+      console.error('Unable to delete listing from Supabase:', error)
+      alert('Could not delete the listing. Please try again.')
+    }
+  }
+
+  const normalizedSearch = searchTerm.trim().toLowerCase()
+
+  const filteredItems = items.filter((item) => {
+    const matchesSearch =
+      !normalizedSearch ||
+      item.name.toLowerCase().includes(normalizedSearch) ||
+      item.business.toLowerCase().includes(normalizedSearch)
+
+    const matchesCategory =
+      selectedCategory === 'All' ||
+      (item.category || 'Restaurant').toLowerCase() ===
+        selectedCategory.toLowerCase()
+
+    return matchesSearch && matchesCategory
+  })
 
   const handleReserve = (item) => {
     const pickupCode = Math.random()
@@ -241,6 +292,8 @@ function App() {
                 <input
                   type="text"
                   placeholder="Search for deals near you..."
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
                 />
 
                 <button>
@@ -345,23 +398,38 @@ function App() {
             {/* Categories */}
             <div className="category-row">
 
-              <button className="category active">
+              <button
+                className={`category ${selectedCategory === 'All' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('All')}
+              >
                 All deals
               </button>
 
-              <button className="category">
+              <button
+                className={`category ${selectedCategory === 'Bakery' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('Bakery')}
+              >
                 🥐 Bakery
               </button>
 
-              <button className="category">
+              <button
+                className={`category ${selectedCategory === 'Restaurant' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('Restaurant')}
+              >
                 🍕 Restaurants
               </button>
 
-              <button className="category">
+              <button
+                className={`category ${selectedCategory === 'Grocery' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('Grocery')}
+              >
                 🥬 Grocery
               </button>
 
-              <button className="category">
+              <button
+                className={`category ${selectedCategory === 'Produce' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('Produce')}
+              >
                 🌾 Produce
               </button>
 
@@ -371,7 +439,7 @@ function App() {
             {/* Deal Cards */}
             <div className="deals-grid">
 
-              {items.map((item) => (
+              {filteredItems.map((item) => (
 
                 <div
                   className="deal-card"
@@ -802,6 +870,23 @@ function App() {
               </div>
 
 
+              <div className="form-group">
+                <label>
+                  Category
+                </label>
+
+                <select
+                  name="category"
+                  value={form.category}
+                  onChange={handleFormChange}
+                >
+                  <option value="Bakery">🥐 Bakery</option>
+                  <option value="Restaurant">🍕 Restaurant</option>
+                  <option value="Grocery">🥬 Grocery</option>
+                  <option value="Produce">🌾 Produce</option>
+                </select>
+              </div>
+
               <button
                 type="submit"
                 className="publish-btn"
@@ -886,6 +971,23 @@ function App() {
                     </span>
 
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(item.id)}
+                    style={{
+                      marginLeft: '12px',
+                      padding: '8px 12px',
+                      border: '1px solid #dc2626',
+                      borderRadius: '8px',
+                      background: 'transparent',
+                      color: '#dc2626',
+                      cursor: 'pointer',
+                      fontWeight: 600,
+                    }}
+                  >
+                    Delete
+                  </button>
 
                 </div>
 
